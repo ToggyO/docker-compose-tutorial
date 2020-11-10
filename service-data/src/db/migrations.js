@@ -23,6 +23,7 @@ const createUsersTable = async () => {
   try {
     await db.connection.query(query);
     await db.connection.end();
+    console.log('Table users is successfully created!');
   } catch (error) {
     throw new Error(error);
   }
@@ -34,7 +35,13 @@ const createUser = async () => {
   try {
     await db.connection.query(query);
     await db.connection.end();
+    console.log('Default user is successfully added!');
   } catch (error) {
     throw new Error(error);
   }
 };
+
+module.exports.migrate = async () => {
+  await createUsersTable();
+  await createUser();
+}

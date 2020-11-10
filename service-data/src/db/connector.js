@@ -8,16 +8,20 @@ const {
   PG_DB,
 } = process.env;
 
-class Database {
+class Connector {
   get connection() {
-    return new Client({
+    const client = new Client({
       host: PG_HOST,
       port: PG_PORT,
       user: PG_USER,
       password: PG_PASSWORD,
       database: PG_DB,
     });
+
+     client.connect();
+
+     return client;
   }
 }
 
-module.exports.db = new Database();
+module.exports.db = new Connector();

@@ -6,6 +6,7 @@ require('dotenv').config({
 });
 
 const { requestHandler } = require('./handler');
+const { migrate } = require('./db/migrations');
 
 const { DATA_HOST, DATA_PORT, NODE_ENV } = process.env;
 
@@ -16,6 +17,6 @@ const server = http.createServer(requestHandler);
 server.listen({
   host: DATA_HOST,
   port: parseInt(DATA_PORT, 10)
-}, () =>
-  console.log(`Data service started on ${serviceUrl} in ${NODE_ENV} mode`
-));
+}, () => {
+  migrate().then(() => console.log(`Data service started on ${serviceUrl} in ${NODE_ENV} mode`));
+});
