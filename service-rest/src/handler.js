@@ -11,7 +11,7 @@ const request = async (url, res) => {
   try {
     const response = await axios.get(`${url}/${url}`);
     res.statusCode = 200;
-    res.write(response.data);
+    res.write(JSON.stringify(response.data));
   } catch (error) {
     res.statusCode = 500;
     res.write('Ooops');

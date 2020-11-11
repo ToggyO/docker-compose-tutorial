@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  service-db-dev:
+    image: postgres:12.1
+    container_name: service-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    volumes:
+      - './db-volume:/var/lib/postgresql/data'
+    ports:
+      - ${PG_EXTERNAL_PORT}:${PG_PORT}
