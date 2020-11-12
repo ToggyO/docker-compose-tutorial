@@ -46,5 +46,5 @@ const createUser = async () => {
 
 module.exports.migrate = async () => {
   await createUsersTable();
-  // await createUser();
+  await createUser();
 }

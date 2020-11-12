@@ -1,0 +1,83 @@
+version: '3.5'
+services:
+  service-docker-db:
+    image: postgres:12.1
+    container_name: service-docker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    volumes:
+      - './db-volume:/var/lib/postgresql/data'
+    expose:
+      - ${PG_PORT}
+    networks:
+      - internal-network
+
+  service-docker-data:
+    container_name: service-docker-data
+    restart: unless-stopped
+    build:
+      context: ./service-data
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DATA_HOST: ${DATA_HOST}
+      DATA_PORT: ${DATA_PORT}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_EXTERNAL_PORT: ${PG_EXTERNAL_PORT}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DB: ${PG_DB}
+    expose:
+      - ${DATA_PORT}
+    depends_on:
+      - service-docker-db
+#    links:
+#      - service-docker-db
+    networks:
+      - internal-network
+
+  service-docker-another:
+    container_name: service-docker-another
+    restart: unless-stopped
+    build:
+      context: ./service-another
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      ANOTHER_HOST: ${ANOTHER_HOST}
+      ANOTHER_PORT: ${ANOTHER_PORT}
+    expose:
+      - ${ANOTHER_PORT}
+    networks:
+      - internal-network
+
+  service-docker-rest:
+    container_name: service-docker-rest
+    restart: on-failure
+    build:
+      context: ./service-rest
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      REST_HOST: ${REST_HOST}
+      REST_PORT: ${REST_PORT}
+      DATA_HOST: ${DATA_HOST}
+      DATA_PORT: ${DATA_PORT}
+      ANOTHER_HOST: ${ANOTHER_HOST}
+      ANOTHER_PORT: ${ANOTHER_PORT}
+    ports:
+      - ${REST_PORT}:${REST_PORT}
+    networks:
+      - internal-network
+      - external-network
+
+networks:
+  internal-network:
+    driver: bridge
+    internal: true
+  external-network:
+    driver: bridge

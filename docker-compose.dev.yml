@@ -1,6 +1,6 @@
 version: '3.5'
 services:
-  service-db-dev:
+  service-docker-db-dev:
     image: postgres:12.1
     container_name: service-db-dev
     restart: unless-stopped

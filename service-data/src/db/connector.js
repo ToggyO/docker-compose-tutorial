@@ -1,7 +1,9 @@
 const { Client } = require('pg');
 
 const {
+  NODE_ENV,
   PG_HOST,
+  PG_PORT,
   PG_EXTERNAL_PORT,
   PG_USER,
   PG_PASSWORD,
@@ -16,7 +18,7 @@ class Connector {
   async connection() {
     const client = new Client({
       host: PG_HOST,
-      port: PG_EXTERNAL_PORT,
+      port: NODE_ENV === 'development' ? PG_PORT : PG_EXTERNAL_PORT,
       user: PG_USER,
       password: PG_PASSWORD,
       database: PG_DB,
