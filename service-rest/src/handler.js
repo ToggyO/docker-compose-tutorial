@@ -24,6 +24,10 @@ module.exports.requestHandler = async (req, res) => {
   const anotherServiceUrl = `http://${ANOTHER_HOST}:${ANOTHER_PORT}`;
 
   switch (url) {
+    case '/hello':
+      res.write('Hello from rest-service');
+      break;
+
     case '/ping-data-service':
       await request(`${dataServiceUrl}/${url}`, res);
       break;

@@ -1,7 +1,7 @@
 const { db } = require('./db/connector');
 
 module.exports.requestHandler = async (req, res) => {
-  const query = `SELECT Id, Name, Age FROM users;`
+  const query = 'SELECT Id, Name, Age FROM users;'
   try {
     const client = await db.connection();
     const result = await client.query(query);

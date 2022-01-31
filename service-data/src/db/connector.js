@@ -16,9 +16,10 @@ class Connector {
   }
 
   async connection() {
+    console.log(NODE_ENV);
     const client = new Client({
       host: PG_HOST,
-      port: NODE_ENV === 'development' ? PG_PORT : PG_EXTERNAL_PORT,
+      port: NODE_ENV === 'development' ? PG_EXTERNAL_PORT :  PG_PORT,
       user: PG_USER,
       password: PG_PASSWORD,
       database: PG_DB,
